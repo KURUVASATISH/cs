@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Test Client</title>
+    <style>
+        /* Basic reset and layout */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        /* Message container styling */
+        #message-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+        /* Input container styling */
+        #input-container {
+            display: flex;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-top: 1px solid #ddd;
+        }
+        /* Message input field styling */
+        #message-input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        /* Send button styling */
+        button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="message-container"></div>
+    <div id="input-container">
+        <input type="text" id="message-input" placeholder="Type your message" autofocus>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const messageInput = document.getElementById('message-input');
+        const messageContainer = document.getElementById('message-container');
+
+        // Debugging logs
+        console.log('Connecting to WebSocket server...');
+
+        // Connection status
+        socket.on('connect', () => {
+            console.log('✅ Connected to server with socket ID:', socket.id);
+            messageInput.disabled = false;
+        });
+
+        socket.on('disconnect', () => {
+            console.log('❌ Disconnected from server');
+            messageInput.disabled = true;
+        });
+
+        socket.on('connect_error', (err) => {
+            console.error('🔴 Connection error:', err.message);
+        });
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            console.log('📤 Sending message:', message);
+            socket.emit('message', {
+                content: message,
+                sender: 'Test User',
+                timestamp: new Date().toISOString()
+            });
+            
+            messageInput.value = '';
+            messageInput.focus();
+        }
+
+        // Handle incoming messages
+        socket.on('message', (msg) => {
+            console.log('📩 Received message:', msg);
+            const messageElement = document.createElement('div');
+            messageElement.innerHTML = `
+                <strong>${msg.sender}:</strong> 
+                <span>${msg.content}</span>
+                <small>${new Date(msg.timestamp).toLocaleTimeString()}</small>
+            `;
+            messageContainer.appendChild(messageElement);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        });
+
+        // Enter key support
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Private Chat</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="online-users">
+            <h3>Online Users</h3>
+            <ul id="online-users"></ul>
+            <h3>Registered Users</h3>
+            <ul id="offline-users"></ul>
+        </div>
+
+        <div class="chat-area">
+            <div class="chat-header">
+                <button id="profile-btn">Profile</button>
+            </div>
+            <div id="messages"></div>
+            <div class="input-container">
+                <input type="text" id="receiver-username" placeholder="Recipient Username">
+                <input type="text" id="message-input" placeholder="Type your message">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="chat.js"></script>
+</body>
+</html>

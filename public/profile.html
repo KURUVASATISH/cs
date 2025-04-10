@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Profile</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="profile-container">
+    <h2>Your Profile</h2>
+    <div id="profile-info">
+      <p><strong>Username:</strong> <span id="username"></span></p>
+    </div>
+    <div class="update-password">
+      <h3>Change Password</h3>
+      <form id="update-password-form">
+        <input type="password" id="new-password" placeholder="New Password" required>
+        <button type="submit">Update Password</button>
+      </form>
+      <div id="update-message"></div>
+    </div>
+    <button id="back-chat">Back to Chat</button>
+  </div>
+  <script src="profile.js"></script>
+</body>
+</html>
