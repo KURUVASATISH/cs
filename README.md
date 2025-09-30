@@ -1,1 +1,1 @@
-# cs
+This current project is a chat system with end-to-end encryption, with RSA algorithm. I have built this useful project using html, css, javascript, MongoDB, and some of the json libraries. In this project, an user will be able to chat with other user based on public key sets. These public keys are inturn displayed to the user by their respective user names, which makes task of sending message to intended person makes much more easier.
